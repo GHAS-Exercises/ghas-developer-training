@@ -1,0 +1,15 @@
+version: 2
+registries:
+  maven-artifactory:
+    type: maven-repository
+    url: https://pkgs.dev.azure.com/abhishekdutta0893/_packaging/abhishekdutta0893/maven/v1
+    username: ${{secrets.AZURE_USER}}
+    password: ${{secrets.AZURE_TOKEN}}
+ 
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    registries:
+      - maven-artifactory
+    schedule:
+      interval: "daily"
