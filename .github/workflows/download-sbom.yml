@@ -12,9 +12,9 @@ jobs:
     - name: Authenticate with GitHub CLI
       run: gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Create timestamp
+    - name: Set timestamp
       id: timestamp
-      run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"
+      run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
 
     - name: Use GitHub CLI command
@@ -33,7 +33,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: my-artifact-sbom-${{ steps.timestamp.outputs.timestamp }}
+        name: my-artifact-sbom-${{ env.TIMESTAMP }}
         path: |
           sbom.json
         if-no-files-found: error
