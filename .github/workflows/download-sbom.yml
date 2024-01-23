@@ -16,8 +16,10 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh api \
+        sbom = "$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/GHAS-Exercises/ghas-developer-training/dependency-graph/sbom >> sbom.json \
-        cat sbom.json
+          /repos/GHAS-Exercises/ghas-developer-training/dependency-graph/sbom)"
+
+        echo "sbom:$sbom"
+      
