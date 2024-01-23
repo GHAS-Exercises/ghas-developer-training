@@ -12,6 +12,11 @@ jobs:
     - name: Authenticate with GitHub CLI
       run: gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Create timestamp
+      id: timestamp
+      run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"
+
+
     - name: Use GitHub CLI command
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,14 +26,14 @@ jobs:
         sbom="$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/$ORG_NAME/$REPO_NAME/dependency-graph/sbom)"
+          /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/dependency-graph/sbom)"
 
         echo "sbom:$sbom" >> sbom.json
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: my-artifact-sbom
+        name: my-artifact-sbom-${{ steps.timestamp.outputs.timestamp }}
         path: |
           sbom.json
         if-no-files-found: error
