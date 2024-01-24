@@ -27,6 +27,9 @@ jobs:
           /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/dependency-graph/sbom)"
 
         echo "sbom:$sbom" >> sbom.json
+        curl -L "https://github.com/CycloneDX/cyclonedx-cli/releases/download/v0.25.0/cyclonedx-linux-x64" -o cyclonedx-linux-x64
+        chmod +x cyclonedx-linux-x64
+        ./cyclonedx-linux-x64 --version
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
